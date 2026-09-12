@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PFAAS content-addressed image manifest",
+  "type": "object",
+  "required": ["shared_code", "private_code", "immutable_data", "instance_data"],
+  "properties": {
+    "shared_code": {"type": "array", "items": {"type": "string", "pattern": "^[a-f0-9]{64}$"}},
+    "private_code": {"type": "array", "items": {"type": "string", "pattern": "^[a-f0-9]{64}$"}},
+    "immutable_data": {"type": "array", "items": {"type": "string", "pattern": "^[a-f0-9]{64}$"}},
+    "instance_data": {"type": "object"}
+  }
+}

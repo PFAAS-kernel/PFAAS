@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/PFAAS-kernel/PFAAS/schemas/host-capabilities.json",
+  "title": "PFAAS execution-host capabilities",
+  "type": "object",
+  "required": ["schema_version", "host", "capabilities", "probe"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "host": {"type": "object", "required": ["architecture", "os", "cpu_count", "memory_bytes"]},
+    "capabilities": {"type": "object", "required": ["qemu_tcg", "kvm_device", "kvm_api", "kvm_guest_execution", "perf", "numa_nodes", "huge_pages", "iommu"]},
+    "probe": {"type": "object", "required": ["provider", "timestamp_utc", "errors"]}
+  }
+}

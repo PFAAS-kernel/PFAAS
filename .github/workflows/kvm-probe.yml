@@ -1,0 +1,27 @@
+name: KVM capability probe
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/kvm-probe.yml', 'freestanding/**', 'scripts/build-freestanding.sh', 'scripts/ci-kvm-probe.sh', 'tools/experiment-runner/**']
+jobs:
+  kvm-probe:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install probe dependencies
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends clang lld llvm qemu-system-x86
+      - name: Grant access to KVM
+        run: if test -e /dev/kvm; then sudo chmod 0666 /dev/kvm; fi
+      - name: Execute the provider-independent KVM probe
+        env:
+          PFAAS_RUNNER_PROVIDER: github-actions
+        run: ./scripts/ci-kvm-probe.sh
+      - name: Preserve capability evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: github-actions-kvm-capabilities
+          path: verification/ci-github-actions-capabilities.json
+          if-no-files-found: warn

@@ -1,0 +1,23 @@
+version: 2.1
+jobs:
+  kvm-probe:
+    machine:
+      image: android:current
+    resource_class: medium.gen2
+    steps:
+      - checkout
+      - run:
+          name: Install probe dependencies
+          command: sudo apt-get update && sudo apt-get install -y --no-install-recommends clang lld llvm qemu-system-x86
+      - run:
+          name: Grant access to KVM
+          command: if test -e /dev/kvm; then sudo chmod 0666 /dev/kvm; fi
+      - run:
+          name: Execute the provider-independent KVM probe
+          command: PFAAS_RUNNER_PROVIDER=circleci ./scripts/ci-kvm-probe.sh
+      - store_artifacts:
+          path: verification/ci-circleci-capabilities.json
+          destination: ci-circleci-capabilities.json
+workflows:
+  kvm-capability:
+    jobs: [kvm-probe]

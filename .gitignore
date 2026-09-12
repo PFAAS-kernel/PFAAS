@@ -1,0 +1,16 @@
+# Local and generated build state
+/build/
+/verification/*
+!/verification/.gitkeep
+/fleet/variants/generated/
+
+# Pinned third-party source trees are fetched by the bootstrap script
+/unikernel-baseline/unikraft/
+/linux-baseline/buildroot/
+
+# Python/editor residue
+__pycache__/
+*.py[cod]
+.venv/
+.idea/
+.vscode/
